@@ -1,8 +1,19 @@
-# YT Transcript -- macOS Menu Bar App
+# YT Tools
 
-A native macOS menu bar app that grabs YouTube transcripts with one click and copies them to your clipboard.
+A growing toolkit for capturing knowledge from YouTube videos -- fetch transcripts, record your thoughts about them, and push everything into your personal knowledge base (ER1).
 
 Built on top of [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) by [@jdepoix](https://github.com/jdepoix).
+
+## What's in the box
+
+| Tool | Status | Description |
+|------|--------|-------------|
+| **Menu Bar App** | available | macOS menu bar app -- fetch transcripts with one click |
+| **History Inspector** | available | Web app -- sync your YouTube watch history, browse transcripts, word clouds |
+| **Impression Capture** | planned | Record a voice note about a video, bundle both transcripts, push to ER1 |
+| **ER1 Integration** | planned | Export video transcripts and impressions to your personal knowledge base |
+
+See the [full documentation](https://kamir.github.io/youtube-transcript-api/) and [ER1 integration requirements](https://kamir.github.io/youtube-transcript-api/requirements-er1-integration).
 
 ## Install
 
@@ -22,25 +33,38 @@ tools/build.sh
 tools/deploy.sh
 ```
 
-## How it works
+## Menu Bar App
+
+Fetch transcripts from the macOS menu bar -- no terminal needed.
 
 1. Click the YouTube icon in your menu bar
-2. Enter a video ID or paste a full YouTube URL
-3. The video opens in your browser for preview
-4. The transcript is fetched and copied to your clipboard
-5. A confirmation dialog shows the result with two options:
-   - **Close** -- keep the clipboard content
-   - **Trash** -- clear the clipboard (plays the macOS trash sound)
+2. Paste a video URL or ID
+3. The transcript is fetched, copied to your clipboard, and stored in history
 
-## Features
+Features: language fallback with selection dialog, language flags, last 20 transcripts in history, logging to `~/Library/Logs/YTTranscript.log`.
 
-| Feature | Details |
-|---------|---------|
-| Language fallback | If English isn't available, offers the original language or an English translation -- you choose |
-| Language flags | Shows the flag of the transcript language in status, notifications, and history |
-| Clipboard feedback | Menu bar shows a clipboard icon after fetch; dialog lets you keep or discard |
-| History | Last 20 transcripts stored; re-copy any entry from the History submenu |
-| Logging | All activity logged to `~/Library/Logs/YTTranscript.log` |
+## History Inspector
+
+A web app that syncs your YouTube watch history and fetches transcripts for analysis. Requires [Google OAuth credentials](https://kamir.github.io/youtube-transcript-api/authentication).
+
+```bash
+docker compose up        # open http://localhost:8080
+```
+
+Features: OAuth login, history sync, timeline view, transcript fetching, word clouds, Google Takeout import.
+
+## Impression Capture (planned)
+
+The idea: you watch a video, then **speak your thoughts** about it. The tool:
+
+1. Fetches the video transcript
+2. Records your voice note and transcribes it (Whisper)
+3. Bundles both into a composite document:
+   - **Video transcript** -- what was said in the video
+   - **Your impression** -- what you thought about it
+4. Pushes the combined payload into ER1 as a memory entry
+
+This follows the same pattern as [audio-checklist-checker-py](https://github.com/kamir/my-ai-X) -- local MEMORY folder, tagged transcript, ER1 API upload -- but applied to YouTube content instead of raw voice recordings.
 
 ## Lifecycle scripts
 
